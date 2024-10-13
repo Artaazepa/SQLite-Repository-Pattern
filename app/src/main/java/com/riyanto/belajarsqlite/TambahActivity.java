@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.riyanto.belajarsqlite.helpers.DatabaseHelper;
+import com.riyanto.belajarsqlite.helpers.Singleton;
 
 public class TambahActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class TambahActivity extends AppCompatActivity {
         etNama = findViewById(R.id.et_nama);
         spProdi = findViewById(R.id.sp_prodi);
         btnSimpan = findViewById(R.id.btn_simpan);
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper = Singleton.getInstance(this);
 
         String[] arrProdi = {"Manajemen Informatika", "Teknik Listrik"};
         spProdi.setAdapter(new ArrayAdapter<>(this,

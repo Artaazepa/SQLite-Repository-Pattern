@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.riyanto.belajarsqlite.adapters.MahasiswaAdapter;
 import com.riyanto.belajarsqlite.helpers.DatabaseHelper;
+import com.riyanto.belajarsqlite.helpers.Singleton;
 import com.riyanto.belajarsqlite.models.Mahasiswa;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         listViewMahasiswa    = findViewById(R.id.lv_mahasiswa);
         floatingActionButton = findViewById(R.id.fab_tambah);
 
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper = Singleton.getInstance(this);
 
         tampilMahasiswa();
         adapter = new MahasiswaAdapter(this, mahasiswaList);
