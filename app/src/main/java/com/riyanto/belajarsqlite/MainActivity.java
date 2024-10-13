@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.riyanto.belajarsqlite.adapters.MahasiswaAdapter;
 import com.riyanto.belajarsqlite.helpers.DatabaseHelper;
+import com.riyanto.belajarsqlite.helpers.MahasiswaRepository;
 import com.riyanto.belajarsqlite.helpers.Singleton;
 import com.riyanto.belajarsqlite.models.Mahasiswa;
 
@@ -21,8 +22,9 @@ public class MainActivity extends AppCompatActivity {
     ListView listViewMahasiswa;
     static DatabaseHelper databaseHelper;
     static ArrayList<Mahasiswa> mahasiswaList = new ArrayList<>();
-    MahasiswaAdapter adapter;
+    static MahasiswaAdapter adapter;
     FloatingActionButton floatingActionButton;
+    static MahasiswaRepository mahasiswaRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +34,10 @@ public class MainActivity extends AppCompatActivity {
         listViewMahasiswa    = findViewById(R.id.lv_mahasiswa);
         floatingActionButton = findViewById(R.id.fab_tambah);
 
-        databaseHelper = Singleton.getInstance(this);
+        mahasiswaRepository  = new MahasiswaRepository(this);
 
         tampilMahasiswa();
-        adapter = new MahasiswaAdapter(this, mahasiswaList);
 
-        listViewMahasiswa.setAdapter(adapter);
 
         floatingActionButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, TambahActivity.class);
@@ -53,18 +53,10 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private static void tampilMahasiswa() {
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM mahasiswa", null);
+    private void tampilMahasiswa() {
+        mahasiswaList = mahasiswaRepository.tampilMahasiswa();
+        adapter = new MahasiswaAdapter(this, mahasiswaList);
 
-        while (cursor.moveToNext()) {
-            mahasiswaList.add(
-                new Mahasiswa(
-                    cursor.getString(0),
-                    cursor.getString(1),
-                    cursor.getString(2)
-                )
-            );
-        }
+        listViewMahasiswa.setAdapter(adapter);
     }
 }

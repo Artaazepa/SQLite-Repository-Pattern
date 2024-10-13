@@ -11,14 +11,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.riyanto.belajarsqlite.helpers.DatabaseHelper;
+import com.riyanto.belajarsqlite.helpers.MahasiswaRepository;
 import com.riyanto.belajarsqlite.helpers.Singleton;
+import com.riyanto.belajarsqlite.models.Mahasiswa;
 
 public class TambahActivity extends AppCompatActivity {
 
     EditText etNim, etNama;
     Spinner spProdi;
     Button btnSimpan;
-    DatabaseHelper databaseHelper;
+    MahasiswaRepository mahasiswaRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,8 @@ public class TambahActivity extends AppCompatActivity {
         etNama = findViewById(R.id.et_nama);
         spProdi = findViewById(R.id.sp_prodi);
         btnSimpan = findViewById(R.id.btn_simpan);
-        databaseHelper = Singleton.getInstance(this);
+
+        mahasiswaRepository = new MahasiswaRepository(this);
 
         String[] arrProdi = {"Manajemen Informatika", "Teknik Listrik"};
         spProdi.setAdapter(new ArrayAdapter<>(this,
@@ -42,9 +45,7 @@ public class TambahActivity extends AppCompatActivity {
             String nama = etNama.getText().toString();
             String prodi = spProdi.getSelectedItem().toString();
 
-            SQLiteDatabase db = databaseHelper.getWritableDatabase();
-            String sql = String.format("INSERT INTO mahasiswa (nim, nama, prodi) VALUES ('%s', '%s', '%s')", nim, nama, prodi);
-            db.execSQL(sql);
+            mahasiswaRepository.tambahMahasiswa(new Mahasiswa(nim, nama, prodi));
 
             super.onBackPressed();
         });
