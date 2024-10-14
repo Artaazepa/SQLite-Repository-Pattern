@@ -12,6 +12,9 @@
         android:theme="@style/Theme.BelajarSQLite"
         tools:targetApi="31">
         <activity
+            android:name=".activity_edit"
+            android:exported="false" />
+        <activity
             android:name=".TambahActivity"
             android:exported="false" />
         <activity
